@@ -14,3 +14,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::moveCursor(QByteArray data)
+{
+    //ui->tuxLabel->move();
+}

@@ -19,5 +19,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+public slots:
+    void moveCursor(QByteArray data);
 };
 #endif // MAINWINDOW_H
