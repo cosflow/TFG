@@ -17,17 +17,9 @@ Server::~Server()
     coordServer->deleteLater();
 }
 
-qint32 Server::ArrayToInt(QByteArray source)
-{
-    qint32 temp;
-    QDataStream data(&source, QIODevice::ReadWrite);
-    data >> temp;
-    return temp;
-}
-
 void Server::newConnection()
 {
-    if (coordServer->hasPendingConnections()){
+    if (coordServer->hasPendingConnections()) {
         QTcpSocket *client = coordServer->nextPendingConnection();
         coordServer->pauseAccepting();
         qDebug() << "Cliente conectado desde la IP " << client->peerAddress();
@@ -43,32 +35,15 @@ void Server::disconnected()
     client->deleteLater();
     client = nullptr;
     buffer->clear();
-    s = 0;
 }
 
-void Server::readyRead()
-{
-    int size = s;
-    while (client->bytesAvailable() > 0)
-    {
+void Server::readyRead() {
+    while (client->bytesAvailable() > 0) {
         buffer->append(client->readAll());
-        while ((size == 0 && buffer->size() >= 4) || (size > 0 && buffer->size() >= size))
-        {
-            if (size == 0 && buffer->size() >= 4)
-            {
-                size = ArrayToInt(buffer->mid(0, 4));
-                s = size;
-                buffer->remove(0, 4);
-            }
-            if (size > 0 && buffer->size() >= size)
-            {
-                QByteArray data = buffer->mid(0, size);
-                buffer->remove(0, size);
-                size = 0;
-                s = size;
-                qDebug() << data;
-                emit dataReceived(data);
-            }
+        int indiceFin = buffer->indexOf('\n');
+        while (indiceFin != -1) {
+            QByteArray coords = buffer->left(indiceFin).trimmed();
+            emit dataReceived(coords);
         }
     }
 }

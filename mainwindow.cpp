@@ -17,5 +17,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::moveCursor(QByteArray data)
 {
-    //ui->tuxLabel->move();
+    QList<QByteArray> vector = data.split('/');
+    ui->tuxLabel->move(vector[0].toInt(), vector[1].toInt());
 }

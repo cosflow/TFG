@@ -18,8 +18,7 @@ public:
 
 private:
     QTcpServer *coordServer;
-    QByteArray *buffer; //We need a buffer to store data until block has completely received
-    qint32 s = 0;
+    QByteArray *buffer;
     QTcpSocket *client;
 
 signals:
