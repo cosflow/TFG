@@ -5,7 +5,7 @@
 #include <QtNetwork/QTcpServer>
 #include <QtNetwork/QAbstractSocket>
 #include <QtNetwork/QTcpSocket>
-#define LISTEN_PORT 45454
+#define LISTEN_PORT 45554
 #define MAX_BUFFER 5
 
 class Server : public QObject

@@ -8,23 +8,24 @@ Server::Server(QObject *parent)
     buffer = new QByteArray();
     coordServer->listen(QHostAddress::Any,LISTEN_PORT);
     qDebug() << "Escuchando en " << coordServer->serverAddress() << ":" << coordServer->serverPort();
-    connect(coordServer, SIGNAL(newConnection),SLOT(newConnection));
+    connect(coordServer, SIGNAL(newConnection()),SLOT(newConnection()));
 }
 
 Server::~Server()
 {
     coordServer->close();
     coordServer->deleteLater();
+    client->deleteLater();
 }
 
 void Server::newConnection()
 {
     if (coordServer->hasPendingConnections()) {
-        QTcpSocket *client = coordServer->nextPendingConnection();
+        client = coordServer->nextPendingConnection();
         coordServer->pauseAccepting();
         qDebug() << "Cliente conectado desde la IP " << client->peerAddress();
-        connect(client, SIGNAL(disconnected),SLOT(disconnected));
-        connect(client, SIGNAL(readyRead),SLOT(readyRead));
+        connect(client, SIGNAL(disconnected()),SLOT(disconnected()));
+        connect(client, SIGNAL(readyRead()),SLOT(readyRead()));
     }
 }
 
@@ -32,7 +33,6 @@ void Server::disconnected()
 {
     coordServer->resumeAccepting();
     qDebug() << "Cliente desconectado.";
-    client->deleteLater();
     client = nullptr;
     buffer->clear();
 }
