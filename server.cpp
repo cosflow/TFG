@@ -1,9 +1,7 @@
 #include "server.h"
 #include <QDebug>
 
-Server::Server(QObject *parent)
-    : QObject{parent}
-{
+Server::Server(QObject *parent) : QObject{parent} {
     coordServer = new QTcpServer();
     buffer = new QByteArray();
     coordServer->listen(QHostAddress::Any,LISTEN_PORT);
@@ -11,15 +9,13 @@ Server::Server(QObject *parent)
     connect(coordServer, SIGNAL(newConnection()),SLOT(newConnection()));
 }
 
-Server::~Server()
-{
+Server::~Server() {
     coordServer->close();
     coordServer->deleteLater();
     client->deleteLater();
 }
 
-void Server::newConnection()
-{
+void Server::newConnection() {
     if (coordServer->hasPendingConnections()) {
         client = coordServer->nextPendingConnection();
         coordServer->pauseAccepting();
@@ -29,8 +25,7 @@ void Server::newConnection()
     }
 }
 
-void Server::disconnected()
-{
+void Server::disconnected() {
     coordServer->resumeAccepting();
     qDebug() << "Cliente desconectado.";
     client = nullptr;
@@ -38,12 +33,13 @@ void Server::disconnected()
 }
 
 void Server::readyRead() {
-    while (client->bytesAvailable() > 0) {
+    if (client->bytesAvailable() > 0) {
         buffer->append(client->readAll());
         int indiceFin = buffer->indexOf('\n');
-        while (indiceFin != -1) {
+        if (indiceFin != -1) {
             QByteArray coords = buffer->left(indiceFin).trimmed();
             emit dataReceived(coords);
+            buffer->clear();
         }
     }
 }
