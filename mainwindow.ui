@@ -15,8 +15,8 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="grid">
-    <item row="0" column="0">
-     <widget class="QLabel" name="tuxLabel">
+    <item row="1" column="1">
+     <widget class="QLabel" name="tuxLbl">
       <property name="text">
        <string>hola</string>
       </property>
@@ -33,7 +33,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

@@ -19,6 +19,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void generateCollisionLabels();
 
 public slots:
     void moveCursor(QByteArray data);
