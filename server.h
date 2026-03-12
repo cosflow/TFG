@@ -12,6 +12,7 @@ class Server : public QObject
     Q_OBJECT
 public:
     explicit Server(QObject *parent = nullptr);
+    int start();
     ~Server();
     qint32 ArrayToInt(QByteArray source);
 
@@ -22,6 +23,9 @@ private:
 
 signals:
     void dataReceived(QByteArray data);
+
+public slots:
+    void emitVibration(int vibId);
 
 private slots:
     void newConnection();

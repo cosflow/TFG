@@ -8,7 +8,9 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     Server *tcpServer = new Server();
+    if(tcpServer->start() == -1) return -1;
     QObject::connect(tcpServer, &Server::dataReceived, &w, &MainWindow::moveCursor);
+    QObject::connect(&w, &MainWindow::collisionsDetected, tcpServer, &Server::emitVibration);
     w.show();
     return a.exec();
 }

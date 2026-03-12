@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,6 +21,10 @@ public:
 private:
     Ui::MainWindow *ui;
     void generateCollisionLabels();
+    QVector <QLabel*> colLbls;
+
+signals:
+    void collisionsDetected(int vibId);
 
 public slots:
     void moveCursor(QByteArray data);
