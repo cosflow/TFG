@@ -12,8 +12,7 @@ int Server::start() {
         coordServer->deleteLater();
         return -1;
     }
-    qDebug() << "Servidor escuchando en " << coordServer->serverAddress()
-             << ":" << coordServer->serverPort();
+    qDebug() << "Servidor escuchando en todas las direcciones y el puerto " << coordServer->serverPort();
     connect(coordServer, SIGNAL(newConnection()),SLOT(newConnection()));
     return 0;
 }
@@ -23,9 +22,9 @@ Server::~Server() {
     coordServer->deleteLater();
     if (client) client->deleteLater();
 }
+
 void Server::newConnection() {
     if (coordServer->hasPendingConnections()) {
-        qDebug() << "Hay clientes.";
         client = coordServer->nextPendingConnection();
         coordServer->pauseAccepting();
         qDebug() << "Cliente conectado desde la IP " << client->peerAddress();
@@ -34,12 +33,9 @@ void Server::newConnection() {
     }
 }
 
-void Server::emitVibration(int vibId) {
+void Server::sendVibId(int vibId) {
     if(!client) return;
-    QByteArray block;
-    block.setNum(vibId);
-    block.append('\n');
-    client->write(block);
+    client->write((char*)&vibId, sizeof(vibId));
 }
 
 void Server::disconnected() {

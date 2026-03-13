@@ -25,7 +25,7 @@ signals:
     void dataReceived(QByteArray data);
 
 public slots:
-    void emitVibration(int vibId);
+    void sendVibId(int vibId);
 
 private slots:
     void newConnection();
